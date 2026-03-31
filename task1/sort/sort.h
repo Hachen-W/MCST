@@ -6,7 +6,8 @@
 
 
 int comparator_ints(const void *first, const void *second);
-int array_sort(int* array, unsigned int count);
+int sort_array(int* array, unsigned int count);
+void sort_merge(int *source, int left, int middle, int right, int *destination);
 
 
 #endif

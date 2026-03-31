@@ -4,7 +4,7 @@ CFLAGS = -Wall -Wextra -g -pthread
 TARGET = bin
 
 SRCS = main.c array/array.c sort/sort.c
-OBJS = main.o array/array.o sort/sort.c
+OBJS = main.o array/array.o sort/sort.o
 
 
 all: $(TARGET)
