@@ -1,3 +1,11 @@
+#ifndef ARRAY_H_INCLUDED
+#define ARRAY_H_INCLUDED
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+
 typedef struct
 {
     int *data;
@@ -11,3 +19,5 @@ int array_update(Array *old_array, unsigned int capacity);
 int array_destroy(Array *array);
 int array_push(Array *array, int value);
 void array_output(Array *array);
+
+#endif
