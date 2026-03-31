@@ -1,10 +1,10 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -g
+CFLAGS = -Wall -Wextra -g -pthread
 
 TARGET = bin
 
-SRCS = main.c array/array.c
-OBJS = main.o array/array.o
+SRCS = main.c array/array.c sort/sort.c
+OBJS = main.o array/array.o sort/sort.c
 
 
 all: $(TARGET)
