@@ -27,7 +27,9 @@ int main(int argc, char* argv[])
     if (checker != 0)
         return checker;
 
-    process(&array, threads_count);
+    checker = process(&array, threads_count);
+    if (checker != 0)
+        return checker;
 
     array_output(&array);
 
@@ -35,41 +37,55 @@ int main(int argc, char* argv[])
 }
 
 
-int array_read(Array *array)
-{
-    int new_elem = 0;
-
-    while (scanf("%d", &new_elem) == 1)
-        array_push(array, new_elem);
-
-    return 0;
-}
-
-
 int process(Array *array, unsigned int threads_count)
-{
-    sort_parts(array, threads_count);
-}
-
-
-int sort_parts(Array *array, unsigned int threads_count)
 {
     if (threads_count > array->size)
         threads_count = array->size;
+    int checker = 0;
 
     pthread_t *threads = malloc(sizeof(pthread_t) * threads_count);
     ThreadData *tasks = malloc(sizeof(ThreadData) * threads_count);
     int *buffer = malloc(sizeof(int) * array->size);
     int *lefts = malloc(sizeof(int) * threads_count);
     int *rights = malloc(sizeof(int) * threads_count);
-    int result = 1;
-
     if (threads == NULL || tasks == NULL || buffer == NULL ||
             lefts == NULL || rights == NULL)
+    {
+        checker = 1;
         goto cleanup;
+    }
+    
+    checker = sort_parts(array, threads_count, threads, tasks, lefts, rights);
+    if (checker != 0)
+        goto cleanup;
+    merge_parts(array, threads_count, buffer, lefts, rights);
 
+cleanup:
+    free(threads);
+    free(tasks);
+    free(buffer);
+    free(lefts);
+    free(rights);
+
+    return checker;
+}
+
+
+void *sort_part(void *part)
+{
+    ThreadData *thread_data = (ThreadData *) part;
+    int count = thread_data->right - thread_data->left;
+    sort_array(thread_data->data + thread_data->left, count);
+    return NULL;
+}
+
+
+int sort_parts(Array *array, unsigned int threads_count, pthread_t *threads,
+        ThreadData *tasks, int *lefts, int *rights
+        )
+{
     int base = array->size / threads_count;
-    int rem = array->size % threads_count;
+    unsigned int rem = array->size % threads_count;
     int start = 0;
     for (unsigned int thread_index = 0; thread_index < threads_count; thread_index++)
     {
@@ -86,19 +102,64 @@ int sort_parts(Array *array, unsigned int threads_count)
 
         start = tasks[thread_index].right;
 
-        if (pthread_create(&threads[thread_index], NULL, array_sort, &tasks[thread_index]) != 0)
-            goto cleanup;
+        if (pthread_create(&threads[thread_index], NULL, sort_part, &tasks[thread_index]) != 0)
+            return 1;
     }
 
     for (unsigned int thread_index = 0; thread_index < threads_count; thread_index++)
         if (pthread_join(threads[thread_index], NULL) != 0)
-            goto cleanup;
+            return 1;
 
-cleanup:
-    free(threads);
-    free(tasks);
-    free(buffer);
-    free(lefts);
-    free(rights);
-    return result;
+    return 0;
+}
+
+
+void merge_parts(Array *array, unsigned int threads_count, 
+        int *buffer, int *lefts, int *rights
+        )
+{
+    int *source = array->data;
+    int *destination = buffer;
+    unsigned int parts_count = threads_count;
+
+    while (parts_count > 1)
+    {
+        unsigned int new_parts_count = 0;
+
+        for (unsigned int part_index = 0; part_index < parts_count; part_index += 2)
+        {
+            if (part_index + 1 < parts_count)
+            {
+                int left = lefts[part_index];
+                int middle = rights[part_index];
+                int right = rights[part_index + 1];
+
+                sort_merge(source, left, middle, right, destination);
+
+                lefts[new_parts_count] = left;
+                rights[new_parts_count] = right;
+                new_parts_count++;
+            }
+            else
+            {
+                int left = lefts[part_index];
+                int right = rights[part_index];
+
+                for (int index = left; index < right; index++)
+                    destination[index] = source[index];
+                
+                lefts[new_parts_count] = left;
+                rights[new_parts_count] = right;
+                new_parts_count++;
+            }
+        }
+        int *temp = source;
+        source = destination;
+        destination = temp;
+        parts_count = new_parts_count;
+    }
+
+    if (source != array->data)
+        for (unsigned int index = 0; index < array->size; index++)
+            array->data[index] = source[index];
 }
