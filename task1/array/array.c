@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include "array.h"
 
@@ -79,8 +80,9 @@ int array_push(Array *array, int value)
 }
 
 
-int main()
+void array_output(Array *array)
 {
-
-    return 0;
+    for (unsigned int index = 0; index < array->size; index++)
+        printf("%d ", array->data[index]);
+    printf("\n");
 }
