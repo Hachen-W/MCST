@@ -3,8 +3,8 @@ CFLAGS = -Wall -Wextra -g -pthread
 
 TARGET = bin
 
-SRCS = main.c
-OBJS = main.o
+SRCS = main.c fifo/fifo.c
+OBJS = main.o fifo/fifo.o
 
 
 all: $(TARGET)
