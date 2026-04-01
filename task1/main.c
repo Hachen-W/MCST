@@ -12,7 +12,7 @@ int main(int argc, char* argv[])
     unsigned int threads_count = atoi(argv[1]);
     if (threads_count == 0)
     {
-        fprintf(stderr, "Wrong value of threads_count!");
+        fprintf(stderr, "Wrong value of threads_count!\n");
         return 1;
     }
     
