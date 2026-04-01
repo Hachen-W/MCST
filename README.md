@@ -46,7 +46,24 @@ mkfifo chat.fifo
 
 ## Task 3
 
+1. Скомпилировать программу из каталога task3:
 
+```bash
+make
+```
+
+2. Создать файл для ввода и файл для вывода:
+
+```bash
+touch <input_file>
+touch <output_file>
+```
+
+3. Выполнить следующую команду:
+
+```bash
+./bin <input_file> <output_file> <plain|lex|rplain|rlex>
+```
 
 ## Task 4
 
