@@ -3,8 +3,8 @@ CFLAGS = -Wall -Wextra -g -pthread
 
 TARGET = bin
 
-SRCS = main.c array/array.c
-OBJS = main.o array/array.o
+SRCS = main.c array/array.c opt/opt.c
+OBJS = main.o array/array.o opt/opt.o
 
 
 all: $(TARGET)

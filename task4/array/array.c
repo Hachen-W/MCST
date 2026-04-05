@@ -8,7 +8,7 @@ int array_make(Array *array, unsigned int capacity)
     if (capacity == 0)
         *array = (Array){NULL, 0, 0};
     else {
-        array->data = malloc(capacity * sizeof(int));
+        array->data = malloc(capacity * sizeof(char*));
         if (array->data == NULL)
             return 1;
         array->capacity = capacity;
@@ -31,7 +31,7 @@ int array_update(Array *array, unsigned int capacity)
     }
     else
     {
-        int *temp_data = realloc(array->data, capacity * sizeof(int));
+        char **temp_data = realloc(array->data, capacity * sizeof(char*));
         if (temp_data == NULL)
             return 1;
         array->data = temp_data;
@@ -47,6 +47,9 @@ int array_destroy(Array *array)
     if (array == NULL)
         return 1;
 
+    for (unsigned int index = 0; index < array->size; index++)
+        free(array->data[index]);
+
     free(array->data);
     array->data = NULL;
     array->capacity = 0;
@@ -55,7 +58,7 @@ int array_destroy(Array *array)
 }
 
 
-int array_push(Array *array, int value)
+int array_push(Array *array, char* value)
 {
     if (array == NULL)
         return 1;
@@ -81,17 +84,6 @@ int array_push(Array *array, int value)
 void array_output(Array *array)
 {
     for (unsigned int index = 0; index < array->size; index++)
-        printf("'%c' ", array->data[index]);
+        printf("'%s' ", array->data[index]);
     printf("\n");
-}
-
-
-int array_read(Array *array)
-{
-    int new_elem = 0;
-
-    while (scanf("%d", &new_elem) == 1)
-        array_push(array, new_elem);
-
-    return 0;
 }
