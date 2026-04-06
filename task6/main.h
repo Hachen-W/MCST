@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <time.h>
+#include <pwd.h>
+#include <grp.h>
 
 #include <sys/stat.h>
 

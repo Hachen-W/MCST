@@ -52,11 +52,16 @@ void output_properties(char *argv[], struct stat stats)
 
     // File's permissions
     char perms[11];
+    struct passwd *pw = getpwuid(stats.st_uid);
+    struct group *gr = getgrgid(stats.st_gid);
     mode_to_letters(stats.st_mode, perms);
     printf("%*s: (%04o/%s)", width, "Access",
         stats.st_mode & 07777, perms);
-    printf("\tUid: %d", stats.st_uid);
-    printf("\tGid: %d", stats.st_gid);
+    printf("\tUid: ( %d / %s)",
+        stats.st_uid, pw ? pw->pw_name : "unknown"
+        );
+    printf("\tGid: ( %d / %s)",
+        stats.st_gid, gr ? gr->gr_name : "unknown");
     printf("\n");
 
 
