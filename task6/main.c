@@ -26,7 +26,6 @@ void output_properties(char *argv[], struct stat stats)
 {
     int width = 6;
 
-
     // File name
     printf("%*s: %s\n", width, "File", argv[1]);
 
@@ -57,33 +56,20 @@ void output_properties(char *argv[], struct stat stats)
     mode_to_letters(stats.st_mode, perms);
     printf("%*s: (%04o/%s)", width, "Access",
         stats.st_mode & 07777, perms);
-    printf("\tUid: ( %d / %s)",
+    printf("\tUid: ( %d/ %s)",
         stats.st_uid, pw ? pw->pw_name : "unknown"
         );
-    printf("\tGid: ( %d / %s)",
+    printf("\tGid: ( %d/ %s)",
         stats.st_gid, gr ? gr->gr_name : "unknown");
     printf("\n");
 
 
-    struct tm dt;
-    // File's modification time
-    dt = *(gmtime(&stats.st_mtime));
-    printf
-    (
-        "%*s:\t%04d-%02d-%02d\t%02d:%02d:%02d\n", width, "Modify",
-        dt.tm_year + 1900, dt.tm_mon + 1, dt.tm_mday,
-        dt.tm_hour, dt.tm_min, dt.tm_sec
-        );
-
-
-    // File's creation time
-    dt = *(gmtime(&stats.st_ctime));
-    printf
-    (
-        "%*s:\t%04d-%02d-%02d\t%02d:%02d:%02d\n", width, "Birth",
-        dt.tm_year + 1900, dt.tm_mon + 1, dt.tm_mday,
-        dt.tm_hour, dt.tm_min, dt.tm_sec
-        );
+    // File's time. 
+    print_time("Access", stats.st_atim);
+    print_time("Modify", stats.st_mtim);
+    print_time("Change", stats.st_ctim);
+    // Birth нет в stat
+    // print_time("Birth", stats.st_btim);
 }
 
 const char *file_type(mode_t mode)
@@ -121,4 +107,21 @@ void mode_to_letters(mode_t mode, char *str)
     str[9] = (mode & S_IXOTH)   ? 'x' : '-';
 
     str[10] = '\0';
+}
+
+void print_time(const char *label, struct timespec ts)
+{
+    char date[32];
+    char zone[16];
+    struct tm tm;
+    int width = 6;
+
+    localtime_r(&ts.tv_sec, &tm);
+    strftime(date, sizeof(date), "%Y-%m-%d %H:%M:%S", &tm);
+    strftime(zone, sizeof(zone), "%z", &tm);
+
+    printf(
+        "%*s: %s.%09ld %s\n",
+        width, label, date, ts.tv_nsec, zone
+        );
 }
