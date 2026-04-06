@@ -11,6 +11,7 @@
 
 void output_properties(char *argv[], struct stat stats);
 const char *file_type(mode_t mode);
+void mode_to_letters(mode_t mode, char *str);
 
 
 #endif

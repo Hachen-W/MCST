@@ -25,9 +25,13 @@ int main(int argc, char *argv[])
 void output_properties(char *argv[], struct stat stats)
 {
     int width = 6;
-    // Base information
+
+
+    // File name
     printf("%*s: %s\n", width, "File", argv[1]);
 
+
+    // Size
     printf("%*s: %lld\t", width, "Size", (long long)stats.st_size);
     printf("\tBlocks: %lld", (long long)stats.st_blocks);
     printf(
@@ -35,6 +39,8 @@ void output_properties(char *argv[], struct stat stats)
         );
     printf("\n");
 
+
+    // Location
     printf(
         "%*s: %lxh/%lud", width, "Device",
         (unsigned long)stats.st_dev, (unsigned long)stats.st_dev
@@ -45,19 +51,16 @@ void output_properties(char *argv[], struct stat stats)
 
 
     // File's permissions
-    printf("Access: ");
-    if (stats.st_mode & R_OK)
-        printf("read ");
-    if (stats.st_mode & W_OK)
-        printf("write ");
-    if (stats.st_mode & X_OK)
-        printf("execute");
+    char perms[11];
+    mode_to_letters(stats.st_mode, perms);
+    printf("%*s: (%04o/%s)", width, "Access",
+        stats.st_mode & 07777, perms);
     printf("\tUid: %d", stats.st_uid);
     printf("\tGid: %d", stats.st_gid);
     printf("\n");
 
-    struct tm dt;
 
+    struct tm dt;
     // File's modification time
     dt = *(gmtime(&stats.st_mtime));
     printf
@@ -66,6 +69,8 @@ void output_properties(char *argv[], struct stat stats)
         dt.tm_year + 1900, dt.tm_mon + 1, dt.tm_mday,
         dt.tm_hour, dt.tm_min, dt.tm_sec
         );
+
+
     // File's creation time
     dt = *(gmtime(&stats.st_ctime));
     printf
