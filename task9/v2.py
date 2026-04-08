@@ -13,9 +13,7 @@ def main():
             temp_sum = numbers[index]
             index_start = index
 
-        if result[2] - result[1] != max(
-                index + 1 - index_start, result[2] - result[1]
-                ) \
+        if result[2] - result[1] != max(index + 1 - index_start, result[2] - result[1]) \
                 or (
                 result[2] - result[1] == index + 1 - index_start and
                 temp_sum > result[0]
