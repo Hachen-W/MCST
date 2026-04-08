@@ -24,7 +24,7 @@ def main():
             result[1] = index_start
             result[2] = index + 1
 
-    print(numbers[result[1]: result[2]])
+    print(*numbers[result[1]: result[2]])
 
 
 if __name__ == "__main__":
