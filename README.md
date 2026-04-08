@@ -2,14 +2,14 @@
 
 ## Task 1
 
-Скомпилировать программу из корня проекта можно следующим образом:
+1. Скомпилировать программу из корня проекта можно следующим образом:
 
 ```bash
 cd task1
 make
 ```
 
-Проверить программу можно следующим образом:
+2. Проверить программу можно следующим образом:
 
 ```bash
 echo <array> | ./bin <threads_count>
@@ -67,19 +67,140 @@ touch <output_file>
 
 ## Task 4
 
+1. Скомпилировать программу из корня проекта можно следующим образом:
 
+```bash
+cd task4
+make
+```
+
+2. Проверить программу можно следующим образом:
+
+```bash
+./bin <flags>
+```
+
+**Пример проверки:**
+
+```bash
+./bin -tm -s --elbrus=16c file0 --elbrus=2c3 file1
+>Short options: 't' 'm' 's' 
+>Long options: 'elbrus=16c' 'elbrus=2c3' 
+>Non options: 'file0' 'file1'
+```
 
 ## Task 5
 
+1. Скомпилировать программу из корня проекта можно следующим образом:
 
+```bash
+cd task5
+make
+```
+
+2. Проверить программу можно следующим образом:
+
+```bash
+./bin
+```
+
+**Пример проверки:**
+
+```bash
+./bin
+>Errno = 2
+>strerror(2) = No such file or directory
+>Can't open
+>: No such file or directory
+```
 
 ## Task 6
 
+1. Скомпилировать программу из корня проекта можно следующим образом:
 
+```bash
+cd task6
+make
+```
+
+2. Проверить программу можно следующим образом:
+
+```bash
+./bin <file_path>
+```
+
+**Пример проверки:**
+
+```bash
+./bin bin
+>  File: bin
+>  Size: 22088           Blocks: 48      IO Block: 4096  regular file
+>Device: 830h/2096d      Inode: 148402   Links: 1
+>Access: (0755/-rwxr-xr-x)       Uid: ( 1000/ hachen)    Gid: ( 1000/ hachen)
+>Access: 2026-04-09 01:29:14.464536215 +0300
+>Modify: 2026-04-09 01:29:11.247763836 +0300
+>Change: 2026-04-09 01:29:11.247763836 +0300
+```
 
 ## Task 7
 
+1. Скомпилировать программу из корня проекта можно следующим образом:
 
+```bash
+cd task8
+make
+```
+
+2. Проверить программу можно следующим образом:
+
+```bash
+./bin <file_path>
+```
+
+**Пример проверки:**
+
+```bash
+./bin input.txt
+>Parent:
+>gjrsiojg 
+>
+>osdrgi j
+>
+>
+>gsdrg 
+>
+>gsdrg
+>
+>gsdrg
+>
+>Child:
+>gjrsiojg 
+>
+>osdrgi j
+>
+>
+>gsdrg 
+>
+>gsdrg
+>
+>gsdrg
+>
+```
+
+**Содержимое input.txt:**
+```bash
+>gjrsiojg 
+>
+>osdrgi j
+>
+>
+>gsdrg 
+>
+>gsdrg
+>
+>gsdrg
+>
+```
 
 ## Task 8
 
