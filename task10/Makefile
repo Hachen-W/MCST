@@ -1,10 +1,10 @@
-CC = gcc
-CFLAGS = -Wall -Wextra -g -pthread
+CC = g++
+CFLAGS = -Wall -Wextra -g
 
 TARGET = bin
 
-SRCS = main.c
-OBJS = main.o
+SRCS = main.cpp truth/truth.cpp
+OBJS = main.o truth/truth.o
 
 
 all: $(TARGET)
